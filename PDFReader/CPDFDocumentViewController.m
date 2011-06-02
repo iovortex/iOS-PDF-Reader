@@ -30,7 +30,7 @@
 
 - (id)init
 	{
-	if ((self = [super initWithNibName:NSStringFromClass([self class]) bundle:NULL]) != NULL)
+	if ((self = [super initWithNibName:@"PDFReaderViewController" bundle:NULL]) != NULL)
 		{
 		}
 	return(self);
