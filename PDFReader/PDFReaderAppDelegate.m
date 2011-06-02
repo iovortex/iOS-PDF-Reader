@@ -25,4 +25,27 @@
     return YES;
     }
 
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+    {
+    if ([url isFileURL])
+        {
+        NSString *theDocumentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+        
+        NSURL *theDestinationURL = [[NSURL fileURLWithPath:theDocumentsPath] URLByAppendingPathComponent:[url lastPathComponent]];
+        
+        NSError *theError = NULL;
+        BOOL theResult = [[NSFileManager defaultManager] moveItemAtURL:url toURL:theDestinationURL error:&theError];
+        
+        NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+            sourceApplication, @"sourceApplication",
+            annotation, @"annotation",
+            theDestinationURL, @"URL",
+            NULL];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"applicationDidOpenURL" object:application userInfo:theUserInfo];
+        
+        return(theResult);
+        }
+    return(NO);
+    }
+
 @end

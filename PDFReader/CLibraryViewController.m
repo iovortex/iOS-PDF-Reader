@@ -9,10 +9,15 @@
 #import "CLibraryViewController.h"
 
 #import "PDFReaderViewController.h"
+#import "NSFileManager_BugFixExtensions.h"
+
+@interface CLibraryViewController ()
+- (void)scanDirectories;
+@end
 
 @implementation CLibraryViewController
 
-@synthesize paths;
+@synthesize URLs;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -41,16 +46,12 @@
 - (void)viewDidLoad
     {
     [super viewDidLoad];
-    
-    NSString *thePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Samples"];
-    
-    NSArray *thePaths = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:thePath error:NULL];
-    thePaths = [thePaths filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self LIKE '*.pdf'"]];
 
-    self.paths = thePaths;
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidOpenURL:) name:@"applicationDidOpenURL" object:NULL];
+
+    [self scanDirectories];
     [self.tableView reloadData];
-
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -67,9 +68,10 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated
-{
+    {
     [super viewWillAppear:animated];
-}
+
+    }
 
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -102,7 +104,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
     {
-    return([self.paths count]);
+    return([self.URLs count]);
     }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -114,8 +116,7 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
-    cell.textLabel.text = [self.paths objectAtIndex:indexPath.row];
-    NSLog(@"%@", cell.textLabel.text);
+    cell.textLabel.text = [[self.URLs objectAtIndex:indexPath.row] lastPathComponent];
     
     // Configure the cell...
     
@@ -165,12 +166,69 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *thePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Samples"];
-    thePath = [thePath stringByAppendingPathComponent:[self.paths objectAtIndex:indexPath.row]];
-
-    NSURL *theURL = [NSURL fileURLWithPath:thePath];
+    NSURL *theURL = [self.URLs objectAtIndex:indexPath.row];
     PDFReaderViewController *theViewController = [[[PDFReaderViewController alloc] initWithURL:theURL] autorelease];
     [self.navigationController pushViewController:theViewController animated:YES];
 }
+
+- (void)scanDirectories
+    {
+    NSFileManager *theFileManager = [NSFileManager defaultManager];
+
+    NSURL *theDocumentsURL = [NSURL fileURLWithPath:[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject]];
+    
+    NSURL *theInboxURL = [theDocumentsURL URLByAppendingPathComponent:@"Inbox"];
+    NSError *theError = NULL;
+    NSEnumerator *theEnumerator = NULL;
+    id theErrorHandler = ^(NSURL *url, NSError *error) { NSLog(@"ERROR: %@", error); return(YES); };
+    
+    if ([theFileManager fileExistsAtPath:theInboxURL.path])
+        {
+        for (NSURL *theURL in [theFileManager tx_enumeratorAtURL:theInboxURL includingPropertiesForKeys:NULL options:0 errorHandler:theErrorHandler])
+            {
+            NSURL *theDestinationURL = [theDocumentsURL URLByAppendingPathComponent:[theURL lastPathComponent]];
+            BOOL theResult = [theFileManager moveItemAtURL:theURL toURL:theDestinationURL error:&theError];
+            NSLog(@"MOVING: %@ %d %@", theURL, theResult, theError);
+            }
+        }
+
+    NSArray *theAllURLs = [NSArray array];
+    NSArray *theURLs = NULL;
+
+    NSURL *theBundleURL = [[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:@"Samples"];
+    theBundleURL = [theBundleURL URLByStandardizingPath];
+    theEnumerator = [theFileManager tx_enumeratorAtURL:theBundleURL includingPropertiesForKeys:NULL options:0 errorHandler:theErrorHandler];
+    theURLs = [theEnumerator allObjects];
+    theAllURLs = [theAllURLs arrayByAddingObjectsFromArray:theURLs];
+    
+    theEnumerator = [theFileManager tx_enumeratorAtURL:theDocumentsURL includingPropertiesForKeys:NULL options:0 errorHandler:theErrorHandler];
+    theURLs = [theEnumerator allObjects];
+    theAllURLs = [theAllURLs arrayByAddingObjectsFromArray:theURLs];
+    
+    
+    theAllURLs = [theAllURLs filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"lastPathComponent LIKE '*.pdf'"]];
+    
+    theAllURLs = [theAllURLs filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+//        return(YES);
+        return ([[NSFileManager defaultManager] fileExistsAtPath:[evaluatedObject path]]);
+        }]];
+
+    theAllURLs = [theAllURLs sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        return([[obj1 lastPathComponent] compare:[obj2 lastPathComponent]]);
+        }];
+
+    self.URLs = theAllURLs;
+    }
+
+- (void)applicationDidOpenURL:(NSNotification *)inNotification
+    {
+    [self scanDirectories];
+    [self.tableView reloadData];
+    
+    NSURL *theURL = [[inNotification userInfo] objectForKey:@"URL"];
+    PDFReaderViewController *theViewController = [[[PDFReaderViewController alloc] initWithURL:theURL] autorelease];
+    [self.navigationController pushViewController:theViewController animated:YES];
+    
+    }
 
 @end
