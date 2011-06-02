@@ -68,8 +68,21 @@
     UITapGestureRecognizer *theRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)] autorelease];
     [self.view addGestureRecognizer:theRecognizer];
 
-//    UISwipeGestureRecognizer *theSwipeRecognizer = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)] autorelease];
-//    [self.view addGestureRecognizer:theSwipeRecognizer];
+    UISwipeGestureRecognizer *theSwipeRecognizer = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)] autorelease];
+    theSwipeRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+    [self.view addGestureRecognizer:theSwipeRecognizer];
+    
+    theSwipeRecognizer = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)] autorelease];
+    theSwipeRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+    [self.view addGestureRecognizer:theSwipeRecognizer];
+
+    theSwipeRecognizer = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)] autorelease];
+    theSwipeRecognizer.direction = UISwipeGestureRecognizerDirectionUp;
+    [self.view addGestureRecognizer:theSwipeRecognizer];
+    
+    theSwipeRecognizer = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)] autorelease];
+    theSwipeRecognizer.direction = UISwipeGestureRecognizerDirectionDown;
+    [self.view addGestureRecognizer:theSwipeRecognizer];
     
     self.previewBar.delegate = self;
     [self.previewBar addTarget:self action:@selector(previewSelected:) forControlEvents:UIControlEventValueChanged];
@@ -106,12 +119,12 @@
     {
     switch (inSender.direction)
         {
-        case UISwipeGestureRecognizerDirectionLeft:
-        case UISwipeGestureRecognizerDirectionUp:
-            [self.pagingView scrollToPreviousPageAnimated:YES];
-            break;
         case UISwipeGestureRecognizerDirectionRight:
         case UISwipeGestureRecognizerDirectionDown:
+            [self.pagingView scrollToPreviousPageAnimated:YES];
+            break;
+        case UISwipeGestureRecognizerDirectionLeft:
+        case UISwipeGestureRecognizerDirectionUp:
             [self.pagingView scrollToNextPageAnimated:YES];
             break;
         }
