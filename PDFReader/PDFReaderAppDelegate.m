@@ -35,13 +35,15 @@
         
         NSError *theError = NULL;
         BOOL theResult = [[NSFileManager defaultManager] moveItemAtURL:url toURL:theDestinationURL error:&theError];
-        
-        NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-            sourceApplication, @"sourceApplication",
-            annotation, @"annotation",
-            theDestinationURL, @"URL",
-            NULL];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"applicationDidOpenURL" object:application userInfo:theUserInfo];
+        if (theResult == YES)
+            {
+            NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                sourceApplication, @"sourceApplication",
+                annotation, @"annotation",
+                theDestinationURL, @"URL",
+                NULL];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"applicationDidOpenURL" object:application userInfo:theUserInfo];
+            }
         
         return(theResult);
         }
