@@ -9,6 +9,7 @@
 #import "CPDFPage.h"
 
 #import "CPDFDocument.h"
+#import "CPDFDocument_Private.h"
 
 @interface CPDFPage ()
 @property (readwrite, nonatomic, assign) CPDFDocument *document;
@@ -53,6 +54,38 @@
         cg = CGPDFPageRetain(CGPDFDocumentGetPage(self.document.cg, self.pageNumber));
         }
     return(cg);
+    }
+
+- (UIImage *)image
+    {
+    UIImage *theImage = [self.document.cache objectForKey:@"image"];
+    if (theImage == NULL)
+        {
+        CGRect theMediaBox = CGPDFPageGetBoxRect(self.cg, kCGPDFMediaBox);
+        
+        UIGraphicsBeginImageContext(theMediaBox.size);
+        
+        CGContextRef theContext = UIGraphicsGetCurrentContext();
+        
+        CGContextSaveGState(theContext);
+
+        // Flip the context so that the PDF page is rendered right side up.
+        CGContextScaleCTM(theContext, 1.0, -1.0);
+        CGContextDrawPDFPage(theContext, self.cg);
+
+        theImage = UIGraphicsGetImageFromCurrentImageContext();
+        
+        UIGraphicsEndImageContext();
+        
+        [self.document.cache setObject:theImage forKey:@"image" cost:(NSUInteger)ceil(theImage.size.width * theImage.size.height)];
+        }
+    
+    return(theImage);
+    }
+    
+- (UIImage *)imageWithSize:(CGSize)inSize
+    {
+    return(NULL);
     }
 
 @end

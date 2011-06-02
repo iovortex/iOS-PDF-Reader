@@ -8,8 +8,10 @@
 
 #import "CPDFDocument.h"
 
+#import "CPDFDocument_Private.h"
+
 @interface CPDFDocument ()
-@property (readwrite, retain) NSCache *thumbnailCache;
+@property (readwrite, assign) dispatch_queue_t queue;
 
 - (void)startGeneratingThumbnails;
 @end
@@ -22,7 +24,7 @@
 @synthesize cg;
 @synthesize delegate;
 
-@synthesize thumbnailCache;
+@synthesize queue;
 
 - (id)initWithURL:(NSURL *)inURL;
 	{
@@ -39,6 +41,12 @@
     
 - (void)dealloc
     {
+    if (queue != NULL)
+        {
+        dispatch_release(queue);
+        queue = NULL;
+        }
+    
     [URL release];
     URL = NULL;
     
@@ -63,23 +71,23 @@
 
 - (UIImage *)previewForPageAtIndex:(NSInteger)inIndex
     {
-    return([self.thumbnailCache objectForKey:[NSNumber numberWithInteger:inIndex]]);
+    return([self.cache objectForKey:[NSNumber numberWithInteger:inIndex]]);
     }
 
 - (void)startGeneratingThumbnails
     {
-    self.thumbnailCache = [[[NSCache alloc] init] autorelease];
+//    self.thumbnailCache = [[[NSCache alloc] init] autorelease];
 
     const size_t theNumberOfPages = CGPDFDocumentGetNumberOfPages(self.cg);
 
-    dispatch_queue_t queue = dispatch_queue_create("com.example.MyQueue", NULL);
+    queue = dispatch_queue_create("com.example.MyQueue", NULL);
     
     NSURL *theURL = self.URL;
     __block CGPDFDocumentRef theDocument = NULL;
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^(void) {
 
-        dispatch_apply(theNumberOfPages, queue, ^(size_t inPageNumber) {
+        dispatch_apply(theNumberOfPages, self.queue, ^(size_t inPageNumber) {
 
             inPageNumber++;
     
@@ -89,37 +97,37 @@
                 }
             CGPDFPageRef thePage = CGPDFDocumentGetPage(theDocument, inPageNumber);
 
-            CGRect pageRect = CGPDFPageGetBoxRect(thePage, kCGPDFMediaBox);
-            CGFloat pdfScale = 0.5;
-            pageRect.size = CGSizeMake(pageRect.size.width*pdfScale, pageRect.size.height*pdfScale);
+            CGRect theMediaBox = CGPDFPageGetBoxRect(thePage, kCGPDFMediaBox);
+            CGFloat pdfScale = 0.125;
+            theMediaBox.size = CGSizeMake(theMediaBox.size.width*pdfScale, theMediaBox.size.height*pdfScale);
             
             
             // Create a low res image representation of the PDF page to display before the TiledPDFView
             // renders its content.
-            UIGraphicsBeginImageContext(pageRect.size);
+            UIGraphicsBeginImageContext(theMediaBox.size);
             
-            CGContextRef context = UIGraphicsGetCurrentContext();
+            CGContextRef theContext = UIGraphicsGetCurrentContext();
             
             // First fill the background with white.
-            CGContextSetRGBFillColor(context, 1.0,1.0,1.0,1.0);
-            CGContextFillRect(context,pageRect);
+            CGContextSetRGBFillColor(theContext, 1.0,1.0,1.0,1.0);
+            CGContextFillRect(theContext,theMediaBox);
             
-            CGContextSaveGState(context);
+            CGContextSaveGState(theContext);
             // Flip the context so that the PDF page is rendered right side up.
-            CGContextTranslateCTM(context, 0.0, pageRect.size.height);
-            CGContextScaleCTM(context, 1.0, -1.0);
+            CGContextTranslateCTM(theContext, 0.0, theMediaBox.size.height);
+            CGContextScaleCTM(theContext, 1.0, -1.0);
             
             // Scale the context so that the PDF page is rendered 
             // at the correct size for the zoom level.
-            CGContextScaleCTM(context, pdfScale,pdfScale);	
-            CGContextDrawPDFPage(context, thePage);
-            CGContextRestoreGState(context);
+            CGContextScaleCTM(theContext, pdfScale,pdfScale);	
+            CGContextDrawPDFPage(theContext, thePage);
+            CGContextRestoreGState(theContext);
             
             UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
             
             UIGraphicsEndImageContext();
 
-            [self.thumbnailCache setObject:theImage forKey:[NSNumber numberWithInteger:inPageNumber]];
+            [self.cache setObject:theImage forKey:[NSNumber numberWithInteger:inPageNumber]];
 
             dispatch_async(dispatch_get_main_queue(), ^(void) {
                 [self.delegate PDFDocument:self didUpdateThumbnailForPageAtIndex:inPageNumber];

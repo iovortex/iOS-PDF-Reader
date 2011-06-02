@@ -32,6 +32,7 @@
 		451158E013120AC8009D7A3A /* CPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 451158DF13120AC6009D7A3A /* CPageControl.m */; };
 		4549BB161395F44C003957C3 /* Samples in Resources */ = {isa = PBXBuildFile; fileRef = 4549BB151395F44C003957C3 /* Samples */; };
 		4549BB1D1395F47F003957C3 /* Geometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 4549BB1C1395F47F003957C3 /* Geometry.m */; };
+		4558CBC71396EE560065383B /* CPDFDocument_Private.m in Sources */ = {isa = PBXBuildFile; fileRef = 4558CBC61396EE560065383B /* CPDFDocument_Private.m */; };
 		45709F571396DEB30036429D /* NSFileManager_BugFixExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 45709F561396DEB30036429D /* NSFileManager_BugFixExtensions.m */; };
 		45D91C6F1394C9660035BECF /* CFastTiledLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D91C6E1394C9660035BECF /* CFastTiledLayer.m */; };
 		45F232361395C2C4005344AB /* CContentScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F232351395C2C4005344AB /* CContentScrollView.m */; };
@@ -88,6 +89,8 @@
 		4549BB151395F44C003957C3 /* Samples */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Samples; sourceTree = "<group>"; };
 		4549BB1B1395F47F003957C3 /* Geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Geometry.h; sourceTree = "<group>"; };
 		4549BB1C1395F47F003957C3 /* Geometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Geometry.m; sourceTree = "<group>"; };
+		4558CBC51396EE560065383B /* CPDFDocument_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPDFDocument_Private.h; sourceTree = "<group>"; };
+		4558CBC61396EE560065383B /* CPDFDocument_Private.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPDFDocument_Private.m; sourceTree = "<group>"; };
 		45709F551396DEB30036429D /* NSFileManager_BugFixExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSFileManager_BugFixExtensions.h; sourceTree = "<group>"; };
 		45709F561396DEB30036429D /* NSFileManager_BugFixExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSFileManager_BugFixExtensions.m; sourceTree = "<group>"; };
 		45D91C6D1394C9660035BECF /* CFastTiledLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFastTiledLayer.h; sourceTree = "<group>"; };
@@ -176,6 +179,8 @@
 				45024C8A1310D1A700BB3E3D /* CPDFPageView.m */,
 				45024C9D1310DB5900BB3E3D /* CPDFDocument.h */,
 				45024C9E1310DB5A00BB3E3D /* CPDFDocument.m */,
+				4558CBC51396EE560065383B /* CPDFDocument_Private.h */,
+				4558CBC61396EE560065383B /* CPDFDocument_Private.m */,
 				451158DB13120754009D7A3A /* CPDFPage.h */,
 				451158DC13120755009D7A3A /* CPDFPage.m */,
 				451158D51311F8E3009D7A3A /* CPreviewBar.h */,
@@ -366,6 +371,7 @@
 				45F2323B1395EB25005344AB /* CLibraryViewController.m in Sources */,
 				4549BB1D1395F47F003957C3 /* Geometry.m in Sources */,
 				45709F571396DEB30036429D /* NSFileManager_BugFixExtensions.m in Sources */,
+				4558CBC71396EE560065383B /* CPDFDocument_Private.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

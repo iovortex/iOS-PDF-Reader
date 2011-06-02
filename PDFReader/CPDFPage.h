@@ -20,4 +20,7 @@
 
 - (id)initWithDocument:(CPDFDocument *)inDocument pageNumber:(NSInteger)inPageNumber;
 
+- (UIImage *)image;
+- (UIImage *)imageWithSize:(CGSize)inSize;
+
 @end
