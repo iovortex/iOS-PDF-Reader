@@ -31,7 +31,7 @@
 
 CGRect ScaleAndAlignRectToRect(CGRect inImageRect, CGRect inDestinationRect, EImageScaling inScaling, EImageAlignment inAlignment)
 {
-CGRect theScaledImageRect;
+CGRect theScaledImageRect = {};
 
 #if TARGET_OS_IPHONE == 0
 #warning FIX THIS FOR NON IPHONE

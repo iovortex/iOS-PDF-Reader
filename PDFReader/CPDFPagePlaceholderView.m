@@ -21,8 +21,8 @@
         
 		// determine the size of the PDF page
 		CGRect pageRect = CGPDFPageGetBoxRect(page, kCGPDFMediaBox);
-		CGFloat pdfScale = self.frame.size.width/pageRect.size.width;
-        pdfScale = 0.125;
+//		CGFloat pdfScale = self.frame.size.width/pageRect.size.width;
+        CGFloat pdfScale = 0.125;
 		pageRect.size = CGSizeMake(pageRect.size.width*pdfScale, pageRect.size.height*pdfScale);
 		
 		
