@@ -8,7 +8,7 @@
 
 #import "NSFileManager_BugFixExtensions.h"
 
-@interface CMyDirectoryEnumerator : NSEnumerator
+@interface CBlockEnumerator : NSEnumerator
 @property (readwrite, nonatomic, copy) id (^block)(void);
 @end
 
@@ -18,10 +18,13 @@
 
 - (NSEnumerator *)tx_enumeratorAtURL:(NSURL *)url includingPropertiesForKeys:(NSArray *)keys options:(NSDirectoryEnumerationOptions)mask errorHandler:(BOOL (^)(NSURL *url, NSError *error))handler;
     {
+    NSAssert(mask == 0, @"We don't handle masks");
+    NSAssert(keys == NULL, @"We don't handle non-null keys");
+    
     NSDirectoryEnumerator *theInnerEnumerator = [self enumeratorAtPath:[url path]];
 
-    CMyDirectoryEnumerator *theEnumerator = [[[CMyDirectoryEnumerator alloc] init] autorelease];
-    theEnumerator.block = (id)^(void) {
+    CBlockEnumerator *theEnumerator = [[[CBlockEnumerator alloc] init] autorelease];
+    theEnumerator.block = ^id(void) {
         NSString *thePath = [theInnerEnumerator nextObject];
         if (thePath != NULL)
             {
@@ -29,7 +32,7 @@
             }
         else
             {
-            return((NSURL *)NULL);
+            return(NULL);
             }
          };
     
@@ -40,7 +43,7 @@
 
 #pragma mark -
 
-@implementation CMyDirectoryEnumerator
+@implementation CBlockEnumerator
 
 @synthesize block;
 
