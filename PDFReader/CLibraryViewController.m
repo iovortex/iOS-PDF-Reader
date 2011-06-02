@@ -47,6 +47,8 @@
     {
     [super viewDidLoad];
 
+        self.title = @"Library";
+
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidOpenURL:) name:@"applicationDidOpenURL" object:NULL];
 
@@ -163,6 +165,11 @@
 */
 
 #pragma mark - Table view delegate
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)inSection
+    {
+    return(@"Temporary UI is temporary");
+    }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
