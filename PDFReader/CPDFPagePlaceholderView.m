@@ -15,7 +15,7 @@
 
 - (void)dealloc
     {
-    [page release];
+    CGPDFPageRelease(page);
     //
     [super dealloc];
     }
