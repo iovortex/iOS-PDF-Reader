@@ -14,7 +14,7 @@
 		45024C471310CEC100BB3E3D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 45024C461310CEC100BB3E3D /* main.m */; };
 		45024C4A1310CEC100BB3E3D /* PDFReaderAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 45024C491310CEC100BB3E3D /* PDFReaderAppDelegate.m */; };
 		45024C4D1310CEC100BB3E3D /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45024C4B1310CEC100BB3E3D /* MainWindow.xib */; };
-		45024C501310CEC100BB3E3D /* PDFReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45024C4F1310CEC100BB3E3D /* PDFReaderViewController.m */; };
+		45024C501310CEC100BB3E3D /* CPDFDocumentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45024C4F1310CEC100BB3E3D /* CPDFDocumentViewController.m */; };
 		45024C531310CEC100BB3E3D /* PDFReaderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45024C511310CEC100BB3E3D /* PDFReaderViewController.xib */; };
 		45024C5A1310CEC100BB3E3D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45024C391310CEC100BB3E3D /* UIKit.framework */; };
 		45024C5B1310CEC100BB3E3D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45024C3B1310CEC100BB3E3D /* Foundation.framework */; };
@@ -62,8 +62,8 @@
 		45024C481310CEC100BB3E3D /* PDFReaderAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PDFReaderAppDelegate.h; sourceTree = "<group>"; };
 		45024C491310CEC100BB3E3D /* PDFReaderAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PDFReaderAppDelegate.m; sourceTree = "<group>"; };
 		45024C4C1310CEC100BB3E3D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainWindow.xib; sourceTree = "<group>"; };
-		45024C4E1310CEC100BB3E3D /* PDFReaderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PDFReaderViewController.h; sourceTree = "<group>"; };
-		45024C4F1310CEC100BB3E3D /* PDFReaderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PDFReaderViewController.m; sourceTree = "<group>"; };
+		45024C4E1310CEC100BB3E3D /* CPDFDocumentViewController.h */ = {isa = PBXFileReference; path = CPDFDocumentViewController.h; sourceTree = "<group>"; };
+		45024C4F1310CEC100BB3E3D /* CPDFDocumentViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CPDFDocumentViewController.m; sourceTree = "<group>"; };
 		45024C521310CEC100BB3E3D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/PDFReaderViewController.xib; sourceTree = "<group>"; };
 		45024C591310CEC100BB3E3D /* PDFReaderTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PDFReaderTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		45024C611310CEC100BB3E3D /* PDFReaderTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PDFReaderTests-Info.plist"; sourceTree = "<group>"; };
@@ -168,8 +168,8 @@
 				45F232381395EB23005344AB /* CLibraryViewController.h */,
 				45F232391395EB23005344AB /* CLibraryViewController.m */,
 				45F2323A1395EB24005344AB /* CLibraryViewController.xib */,
-				45024C4E1310CEC100BB3E3D /* PDFReaderViewController.h */,
-				45024C4F1310CEC100BB3E3D /* PDFReaderViewController.m */,
+				45024C4E1310CEC100BB3E3D /* CPDFDocumentViewController.h */,
+				45024C4F1310CEC100BB3E3D /* CPDFDocumentViewController.m */,
 				45024C511310CEC100BB3E3D /* PDFReaderViewController.xib */,
 				45024C941310D2A000BB3E3D /* CPagingView.h */,
 				45024C951310D2A000BB3E3D /* CPagingView.m */,
@@ -358,7 +358,7 @@
 			files = (
 				45024C471310CEC100BB3E3D /* main.m in Sources */,
 				45024C4A1310CEC100BB3E3D /* PDFReaderAppDelegate.m in Sources */,
-				45024C501310CEC100BB3E3D /* PDFReaderViewController.m in Sources */,
+				45024C501310CEC100BB3E3D /* CPDFDocumentViewController.m in Sources */,
 				45024C8B1310D1A700BB3E3D /* CPDFPageView.m in Sources */,
 				45024C961310D2A100BB3E3D /* CPagingView.m in Sources */,
 				45024C991310D58A00BB3E3D /* CPDFPagePlaceholderView.m in Sources */,

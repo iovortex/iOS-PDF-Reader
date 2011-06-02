@@ -8,7 +8,7 @@
 
 #import "CLibraryViewController.h"
 
-#import "PDFReaderViewController.h"
+#import "CPDFDocumentViewController.h"
 #import "NSFileManager_BugFixExtensions.h"
 
 @interface CLibraryViewController ()
@@ -174,7 +174,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSURL *theURL = [self.URLs objectAtIndex:indexPath.row];
-    PDFReaderViewController *theViewController = [[[PDFReaderViewController alloc] initWithURL:theURL] autorelease];
+    CPDFDocumentViewController *theViewController = [[[CPDFDocumentViewController alloc] initWithURL:theURL] autorelease];
     [self.navigationController pushViewController:theViewController animated:YES];
 }
 
@@ -233,7 +233,7 @@
     [self.tableView reloadData];
     
     NSURL *theURL = [[inNotification userInfo] objectForKey:@"URL"];
-    PDFReaderViewController *theViewController = [[[PDFReaderViewController alloc] initWithURL:theURL] autorelease];
+    CPDFDocumentViewController *theViewController = [[[CPDFDocumentViewController alloc] initWithURL:theURL] autorelease];
     [self.navigationController pushViewController:theViewController animated:YES];
     
     }
