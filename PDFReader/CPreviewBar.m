@@ -50,6 +50,13 @@
     return(self);
     }
 
+- (void)dealloc
+    {
+    [placeholderImage release];
+    //
+    [super dealloc];
+    }
+
 - (void)setSelectedPreviewIndex:(NSUInteger)inSelectedPreviewIndex
     {
     if (selectedPreviewIndex != inSelectedPreviewIndex)

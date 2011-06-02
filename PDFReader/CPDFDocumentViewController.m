@@ -27,7 +27,6 @@
 @synthesize pageControl;
 @synthesize chromeView;
 @synthesize previewBar;
-@synthesize navigationBar;
 
 - (id)init
 	{
@@ -41,14 +40,21 @@
     {
 	if ((self = [self init]) != NULL)
 		{
-        self.document = [[[CPDFDocument alloc] initWithURL:inURL] autorelease];
-        self.document.delegate = self;
+        document = [[CPDFDocument alloc] initWithURL:inURL];
+        document.delegate = self;
 		}
 	return(self);
     }
 
 - (void)dealloc
     {
+    [document release];
+    [pagingView release];
+    [pagePlaceholderView release];
+    [pageControl release];
+    [chromeView release];
+    [previewBar release];
+    //
     [super dealloc];
     }
 

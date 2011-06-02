@@ -25,7 +25,6 @@
 @property (readwrite, nonatomic, retain) IBOutlet CPageControl *pageControl;
 @property (readwrite, nonatomic, retain) IBOutlet UIView *chromeView;
 @property (readwrite, nonatomic, retain) IBOutlet CPreviewBar *previewBar;
-@property (readwrite, nonatomic, retain) IBOutlet UINavigationBar *navigationBar;
 
 - (id)initWithURL:(NSURL *)inURL;
 

@@ -47,17 +47,18 @@
 	return(self);
 	}
 
-//- (UIView *)currentView
-//    {
-//    if (currentView == NULL)
-//        {
-//        currentView = [[self.dataSource pagingView:self viewForPageAtIndex:0] retain];
-//        }
-//    return(currentView);
-//    }
+- (void)dealloc
+    {
+    delegate = NULL;
+    dataSource = NULL;
+    [previousView release];
+    [currentView release];
+    [nextView release];
+    [scrollView release];
+    //
+    [super dealloc];
+    }
 
-
-    
 - (void)setFrame:(CGRect)inBounds
     {
     [super setFrame:inBounds];

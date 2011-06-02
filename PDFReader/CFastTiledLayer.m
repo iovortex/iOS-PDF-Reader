@@ -13,7 +13,6 @@
 
 + (CFTimeInterval)fadeDuration
     {
-    NSLog(@"FADE D");
     return(0);
     }
 

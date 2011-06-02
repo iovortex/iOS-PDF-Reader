@@ -13,6 +13,13 @@
 
 @synthesize page;
 
+- (void)dealloc
+    {
+    [page release];
+    //
+    [super dealloc];
+    }
+
 - (void)setPage:(CGPDFPageRef)inPage
     {
     if (page != inPage)
